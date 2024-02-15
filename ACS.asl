@@ -3,37 +3,28 @@ state("ACS", "Ubisoft Connect")
 {
 int loading: 0x073443F8, 0x388, 0x8, 0xF8, 0xBD8; //Detects if loading, 0 is not loading 1 is for loading
 int endscreen: 0x0732CD70, 0x50, 0x3A0, 0x98; //Detcets end mission sceen, 1 for end screen 0 for literally everything else
-int cutscene: 0x070DE700, 0x8, 0x4D0, 0xBF4; /* Detects first cutscene, 0 for cutscene playing some super high number for not playing a cutscene. 
-//note is for jack the ripper
-int Eviemain: 0x07331920, 0x568, 0x368, 0xC68; // Detects if your playing evie in the main game. 0 if false 2 if true.
-int Jacob: 0x07331920, 0x508, 0xC68, 0xB78; //Detects if your jacob. 0 if false 2 if true.
+int cutscene: 0x073446E8, 0x260,0x9B0,0x58,0x824; //Detects cutscene value in main game not dlc 7 for not in a cutscene and 8 for in a cutscene
+int Eviemain: 0x070E0BE8, 0xD50, 0x0, 0x98, 0x188; // Detects if your playing evie in the main game. 1 if false 2 if true.
+int Jacob: 0x07331920, 0x568, 0x2B0, 0x290, 0x260; //Detects if your jacob. 0 if false 2 if true.
 /*
-int Evieripper:
-int Jack:
+int Evieripper: need to find
+int Jack: need to find
 */
 }
 state("ACS", "Steam")
 {
 int loading:0x0710EBB8, 0xB4;
 //int loadingbackup:0x07154550, 0x904;-use only if first one isint working
-//int endscreen:;
-//int cutscene:;
+//int endscreen:; currently need to refind 
+//int cutscene:; currently need to refind 
 int Eviemain:0x07162178, 0x120, 0xBD8;
 int Jacob:0x0DAEF418, 0x1C8, 0x3C0, 0x238, 0xB30;
 /*
-int Evieripper:
-int Jack:
+int Evieripper: need to find
+int Jack: need to find
 */
 }
-init
-{
-// Detecting the game version based on SHA-256 hash
-byte[] checksum = vars.CalcModuleHash(modules.First());    
-if (Enumerable.SequenceEqual(checksum, vars.aclsteam) )
-    version = "Ubisoft Connect";
-else if(Enumerable.SequenceEqual(checksum, vars.aclubisoftconnect)) 
-    version = "Steam";
-}
+
 startup
 {
 //SHA256: a2e6ca1504d172ca87f500d1d6cb1de97a2f6687f7ce77f661dce95e90c54e0e hash id for steam version 
@@ -64,6 +55,7 @@ vars.CalcModuleHash = CalcModuleHash;
     };
 //these settings will allow the code to know which start code to use
 settings.Add("Categories", true, "select which category you doing ripper or base game");
+
 settings.Add("Main Game", false, "Main Game","Categories");
 settings.SetToolTip("Main Game", "click this to reveal options bellow");
 settings.Add("Fresh Save", false, "Fresh Save","Main Game");
@@ -71,39 +63,51 @@ settings.SetToolTip("Fresh Save", "click this to make timer start upon loading u
 settings.Add("From Save", false, "From Save","Main Game");
 settings.SetToolTip("From Save", "click this to make timer start upon loading into a save already where you have gained control of jacob");
 settings.Add("Level runs", false, "Level runs","Main Game");
-settings.SetToolTip("Level runs", "CLick this if you want to start timer upon replaying any level");
+settings.SetToolTip("Level runs", "Starts the timer upon any missions first cutscene showing regardless if its skippable or not");
+
 settings.Add("DLC", false, "DLC", "Categories");
 settings.SetToolTip("DLC", "click this if you are running jack the ripper dlc otherwise do MainGame");
+}
+
+init
+{
+// Detecting the game version based on SHA-256 hash
+byte[] checksum = vars.CalcModuleHash(modules.First());    
+if (Enumerable.SequenceEqual(checksum, vars.acsSteam))
+    version = "Steam";
+else if(Enumerable.SequenceEqual(checksum, vars.acsubisoftconnect)) 
+    version = "Ubisoft Connect";
 }
 
 start
 //starts when first skippable cutscene plays in dlc
 {
 if(settings["DLC"]){
-    if(current.loading == 0 && old.loading == 1 && current.cutscene == 0){
+    if(current.loading == 0 && old.loading == 1 && current.cutscene == 8){
         return true;
         }
 }
 
 //starts when you gain control of jacob from a fresh save    
 if(settings["Fresh Save"]){
-    if(current.loading == 0 && old.loading == 0 && current.Jacob == 2 && current.Eviemain == 0){
+    if(current.loading == 0 && old.loading == 0 && current.Jacob == 2 && current.Eviemain > 2){
         return true;
     }
 }
 
 //starts when you gain control of jacob from loading a save past the first cutscene
 if(settings["From Save"]){
-    if(old.loading == 1 && current.loading == 0 && current.Jacob == 2 && current.Eviemain == 0){
+    if(old.loading == 1 && current.loading == 0 && current.Jacob == 2 && current.Eviemain > 0){
         return true;
     }
 }
-//starts when starting any level during replay
+//starts when starting a level 
 if(settings["Level runs"]){
-    if(old.loading == 1 && current.loading == 0 && current.cutscene == 0){
+    if(current.cutscene == 8){
         return true;
     }
 }
+
 
 }
 
