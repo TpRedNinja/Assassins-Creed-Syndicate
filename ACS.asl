@@ -3,7 +3,7 @@ state("ACS", "Ubisoft Connect")
 {
 int loading: 0x073443F8, 0x388, 0x8, 0xF8, 0xBD8; //Detects if loading, 0 is not loading 1 is for loading
 int endscreen: 0x0732CD70, 0x50, 0x3A0, 0x98; //Detcets end mission sceen, 1 for end screen 0 for literally everything else
-int cutscene: 0x715EBC0; //Detects cutscene value 0 in loading screen 1 no cutscene 2 for cutscene game and dlc
+int cutscene: 0x715EBC0; //Detects cutscene value 0 in loading screen 1 no cutscene 2 for cutscene game and dlc is not a pointer just "ACS.exe" +(inserst address here)
 int Eviemain: 0x070E0BE8, 0x3C8, 0x980, 0x18, 0x38, 0x84, 0xE8, 0x80; // Detects if your playing evie in the main game. 1 if false 2 if true.
 int Eviebackup: 0x070E0BE8, 0x3C8, 0x980, 0x18, 0x38, 0x84, 0x330, 0x230; // Same as main just in case if the main doesnt work
 int Jacob: 0x070E0BE8, 0xD50, 0x18, 0x480, 0x38, 0x84, 0x390, 0x20; //Detects if your jacob. 0 if false 2 if true.
@@ -12,13 +12,14 @@ int Character: 0x07155D78, 0xB20, 0xA0, 0x560, 0x140; //6 for evie 7 when not in
 }
 state("ACS", "Steam")
 {
-int loading:0x0710EBB8, 0xB4;
-//int loadingbackup:0x07154550, 0x904;-use only if first one isint working
-//int endscreen:; currently need to find 
-int cutscene:0x7154FE0;  
-//int Eviemain:0x;
-//int Jacob:0x;
-//int character:; currently need to find
+int loading:0x0710EBB8, 0xB4; //detects if loading 1 for true 0 for false
+//int loadingbackup:0x07154550, 0x904; //same as og but just in case if first one doesnt work
+int endscreen:0x07325DB0, 0x78, 0x3D0, 0x68; // 1 for endscreen showing 0 for not
+int cutscene:0x7154FE0;  //same as ubi connect
+int Eviemain:0x070D9A38, 0xD50, 0x2D0, 0x7C0, 0x38, 0x84, 0x108, 0x20; //same as ubi connect
+int Eviebackup:0x070D9A38, 0xD50, 0x300, 0x4A0, 0x38, 0x84, 0x3E0, 0x20; //same as ubi connect
+int Jacob:0x07154AA8, 0x58, 0x6C8, 0x898, 0x78, 0x68, 0x30, 0x230; //same as ubi connect
+int character:0x071546C8, 0x18, 0x0, 0x308, 0x158; //same as ubi connect 
 }
 
 startup
@@ -59,7 +60,7 @@ settings.SetToolTip("Fresh Save", "click this to make timer start upon loading u
 settings.Add("From Save", false, "From Save","Main Game");
 settings.SetToolTip("From Save", "click this to make timer start upon loading into a save already where you have gained control of jacob");
 settings.Add("Level runs", false, "Level runs","Main Game");
-settings.SetToolTip("Level runs", "Click this to see the options bellow");
+settings.SetToolTip("Level runs", "Click this if your running level runs");
 //to control when the timer splist for the dlc and if you want it to autostart
 settings.Add("DLC", false, "DLC", "Categories");
 settings.SetToolTip("DLC", "click this if you are running jack the ripper dlc otherwise do MainGame");
