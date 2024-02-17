@@ -3,26 +3,22 @@ state("ACS", "Ubisoft Connect")
 {
 int loading: 0x073443F8, 0x388, 0x8, 0xF8, 0xBD8; //Detects if loading, 0 is not loading 1 is for loading
 int endscreen: 0x0732CD70, 0x50, 0x3A0, 0x98; //Detcets end mission sceen, 1 for end screen 0 for literally everything else
-int cutscene: 0x073446E8, 0x260,0x9B0,0x58,0x824; //Detects cutscene value in main game not dlc 7 for not in a cutscene and 8 for in a cutscene
-int Eviemain: 0x070E0BE8, 0xD50, 0x0, 0x98, 0x188; // Detects if your playing evie in the main game. 1 if false 2 if true.
-int Jacob: 0x07331920, 0x568, 0x2B0, 0x290, 0x260; //Detects if your jacob. 0 if false 2 if true.
-/*
-int Evieripper: need to find
-int Jack: need to find
-*/
+int cutscene: 0x715EBC0; //Detects cutscene value 0 in loading screen 1 no cutscene 2 for cutscene game and dlc
+int Eviemain: 0x070E0BE8, 0x3C8, 0x980, 0x18, 0x38, 0x84, 0xE8, 0x80; // Detects if your playing evie in the main game. 1 if false 2 if true.
+int Eviebackup: 0x070E0BE8, 0x3C8, 0x980, 0x18, 0x38, 0x84, 0x330, 0x230; // Same as main just in case if the main doesnt work
+int Jacob: 0x070E0BE8, 0xD50, 0x18, 0x480, 0x38, 0x84, 0x390, 0x20; //Detects if your jacob. 0 if false 2 if true.
+int Character: 0x07155D78, 0xB20, 0xA0, 0x560, 0x140; //6 for evie 7 when not in london 8 for jack 9 when not in london.
+
 }
 state("ACS", "Steam")
 {
 int loading:0x0710EBB8, 0xB4;
 //int loadingbackup:0x07154550, 0x904;-use only if first one isint working
-//int endscreen:; currently need to refind 
-//int cutscene:; currently need to refind 
+//int endscreen:; currently need to find 
+//int cutscene:; currently need to find 
 int Eviemain:0x07162178, 0x120, 0xBD8;
 int Jacob:0x0DAEF418, 0x1C8, 0x3C0, 0x238, 0xB30;
-/*
-int Evieripper: need to find
-int Jack: need to find
-*/
+//int character:; currently need to find
 }
 
 startup
@@ -55,7 +51,7 @@ vars.CalcModuleHash = CalcModuleHash;
     };
 //these settings will allow the code to know which start code to use
 settings.Add("Categories", true, "select which category you doing ripper or base game");
-
+//to control when the timer starts for the main game
 settings.Add("Main Game", false, "Main Game","Categories");
 settings.SetToolTip("Main Game", "click this to reveal options bellow");
 settings.Add("Fresh Save", false, "Fresh Save","Main Game");
@@ -63,10 +59,18 @@ settings.SetToolTip("Fresh Save", "click this to make timer start upon loading u
 settings.Add("From Save", false, "From Save","Main Game");
 settings.SetToolTip("From Save", "click this to make timer start upon loading into a save already where you have gained control of jacob");
 settings.Add("Level runs", false, "Level runs","Main Game");
-settings.SetToolTip("Level runs", "Starts the timer upon any missions first cutscene showing regardless if its skippable or not");
-
+settings.SetToolTip("Level runs", "Click this to see the options bellow");
+//to control when the timer splist for the dlc and if you want it to autostart
 settings.Add("DLC", false, "DLC", "Categories");
 settings.SetToolTip("DLC", "click this if you are running jack the ripper dlc otherwise do MainGame");
+settings.Add("Start", false, "Start", "DLC");
+settings.SetToolTip("Start", "click this if you want timer to start automatically");
+settings.Add("1", false, "1", "DLC");
+settings.SetToolTip("1", "click this if you want it to split after the 1st jack the ripper mission");
+settings.Add("2", false, "2", "DLC");
+settings.SetToolTip("2", "click this if you want it to split after the 2nd jack the ripper mission");
+settings.Add("3", false, "3", "DLC");
+settings.SetToolTip("3", "click this if you want it to split after 3rd jack the ripper mission");
 }
 
 init
@@ -80,32 +84,33 @@ else if(Enumerable.SequenceEqual(checksum, vars.acsubisoftconnect))
 }
 
 start
-//starts when first skippable cutscene plays in dlc
+
 {
-if(settings["DLC"]){
-    if(current.loading == 0 && old.loading == 1 && current.cutscene == 8){
+//starts when first skippable cutscene plays in dlc    
+if(settings["Start"]){
+    if(current.loading == 0 && old.loading == 1 && current.cutscene == 2 ){
         return true;
         }
 }
 
 //starts when you gain control of jacob from a fresh save    
 if(settings["Fresh Save"]){
-    if(current.loading == 0 && old.loading == 0 && current.Jacob == 2 && current.Eviemain > 2){
+    if(current.loading == 0 && old.loading == 0 && current.Jacob == 2 && current.Eviemain == 2){
         return true;
     }
 }
 
 //starts when you gain control of jacob from loading a save past the first cutscene
 if(settings["From Save"]){
-    if(old.loading == 1 && current.loading == 0 && current.Jacob == 2 && current.Eviemain > 0){
+    if(old.loading == 1 && current.loading == 0 && current.Jacob == 2 && current.Eviemain == 0 || current.Eviebackup == 0){
         return true;
     }
 }
 //starts when starting a level 
 if(settings["Level runs"]){
-    if(current.cutscene == 8){
+    if(old.cutscene == 0 && current.cutscene == 2){
         return true;
-    }
+    } else if(old.cutscene == 0 && current.cutscene == 1)
 }
 
 
@@ -115,14 +120,31 @@ split
 /*splits when end mission screen starts 
 note it does not split after missions that involve jack at the end as their is no end screen for that*/
 {
+    //splits when the endscreen shows up aka the thing that allows you to complete the mission by pressing "a" or "space"
     if(current.endscreen == 1 && old.endscreen == 0){
         return true;
     }
+    //Splits after 1st jack mission-ie after jack puts a knife in jacobs eye :)
+    if(settings["1"]){
+        if(old.character == 8 && current.character == 6 && current.cutscene == 2 ){
+            return true;
+        } 
+    }
+    //splits after 2nd jack mission-ie after evie the mission where you kill jacks warden
+    if(settings["2"]){
+       if(old.character == 9 && current.character == 6 && old.cutscene == 1 && current.loading == 1){
+            return true;
+        }
+    }
+    //splits after 3rd jack mission-ie lambeth mission as jack
+    if(old.character == 7 && current.chracter == 11 && old.cutscene == 1 && current.cutscene == 2){
+            return true;
+        }
 }
 
 isLoading
-//pauses during loading screen and unpauses when out of loading screens note black screens do not count as loading
 {
+    //pauses during loading screen and unpauses when out of loading screens note black screens do not count as loading
     if(current.loading == 1){
         return true;
     }else {
