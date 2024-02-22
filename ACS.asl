@@ -108,9 +108,9 @@ if(settings["From Save"]){
 }
 //starts when starting a level 
 if(settings["Level runs"]){
-    if(old.cutscene == 0 && current.cutscene == 2 || 1){
+    if(old.cutscene == 0 && current.cutscene == 2){
         return true;
-    }
+    } else if(old.cutscene == 0 && current.cutscene == 1)
 }
 
 
