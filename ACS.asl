@@ -110,7 +110,9 @@ if(settings["From Save"]){
 if(settings["Level runs"]){
     if(old.cutscene == 0 && current.cutscene == 2){
         return true;
-    } else if(old.cutscene == 0 && current.cutscene == 1)
+    } else if(old.cutscene == 0 && current.cutscene == 1){
+    return true;
+    }
 }
 
 
