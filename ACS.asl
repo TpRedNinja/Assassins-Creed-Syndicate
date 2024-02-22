@@ -4,8 +4,7 @@ state("ACS", "Ubisoft Connect")
 int loading: 0x073443F8, 0x388, 0x8, 0xF8, 0xBD8; //Detects if loading, 0 is not loading 1 is for loading
 int endscreen: 0x0732CD70, 0x50, 0x3A0, 0x98; //Detcets end mission sceen, 1 for end screen 0 for literally everything else
 int cutscene: 0x715EBC0; //Detects cutscene value 0 in loading screen 1 no cutscene 2 for cutscene game and dlc is not a pointer just "ACS.exe" +(inserst address here)
-int Eviemain: 0x070E0BE8, 0x3C8, 0x980, 0x18, 0x38, 0x84, 0xE8, 0x80; // Detects if your playing evie in the main game. 1 if false 2 if true.
-int Eviebackup: 0x070E0BE8, 0x3C8, 0x980, 0x18, 0x38, 0x84, 0x330, 0x230; // Same as main just in case if the main doesnt work
+int Eviemain: 0x070E0BE8, 0x3C8, 0x980, 0x18, 0x38, 0x84, 0x330, 0x230; // Detects if your playing evie in the main game. 1 if false 2 if true.
 int Jacob: 0x070E0BE8, 0xD50, 0x18, 0x480, 0x38, 0x84, 0x390, 0x20; //Detects if your jacob. 0 if false 2 if true.
 int Character: 0x07155D78, 0xB20, 0xA0, 0x560, 0x140; //6 for evie 7 when not in london 8 for jack 9 when not in london.
 
@@ -109,7 +108,7 @@ if(settings["From Save"]){
 }
 //starts when starting a level 
 if(settings["Level runs"]){
-    if(old.cutscene == 0 && current.cutscene == 2){
+    if(old.cutscene == 0 && current.cutscene == 2 || 1){
         return true;
     }
 }
