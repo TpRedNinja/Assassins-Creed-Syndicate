@@ -111,8 +111,6 @@ if(settings["From Save"]){
 if(settings["Level runs"]){
     if(old.cutscene == 0 && current.cutscene == 2){
         return true;
-    } else if(old.cutscene == 1 && current.cutscene == 2){
-        return true;
     }
 }
 
@@ -140,9 +138,11 @@ note it does not split after missions that involve jack at the end as their is n
         }
     }
     //splits after 3rd jack mission-ie lambeth mission as jack
+    if(settings["3"]){
     if(old.character == 7 && current.chracter == 11 && old.cutscene == 1 && current.cutscene == 2){
             return true;
         }
+    }
 }
 
 isLoading
