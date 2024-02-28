@@ -1,6 +1,6 @@
 // Assassin's Creed Syndicate load remover an autosplitter
 // Supports Ubisoft Connect
-// Support for Steam version is WIP
+// Support for Steam version
 
 
 state("ACS", "Ubisoft Connect")
