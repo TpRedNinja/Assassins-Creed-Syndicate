@@ -1,7 +1,6 @@
-// Assassin's Creed Syndicate load remover an autosplitter
-// Supports Ubisoft Connect
-// Support for Steam version
-
+//assassin's creed syndicate load remover an autosplitter by TpRedNinja w/ DeathHound,AkiloGames, people from the speedrun development tool discord
+//Support for Ubisoft Connect
+//Support for Steam
 
 state("ACS", "Ubisoft Connect")
 {
@@ -112,12 +111,12 @@ start
     }
 }
 
-/*splits when end mission screen starts 
+/*splits when end mission screen disappears 
 note if you want it to split on after the jack missions please select the ripper_# as those will allow it to split after the mission ends as jack*/
 split
 {
-    //splits when the endscreen shows up aka the thing that allows you to complete the mission by pressing "a" or "space"
-    if(current.endscreen == 1 && old.endscreen == 0)
+    //splits after end screen disappears so when you press "A" button or Spacebar
+    if(current.endscreen == 0 && old.endscreen == 1)
         return true;
 
     //Splits after 1st jack mission-ie after jack puts a knife in jacobs eye :)
@@ -127,7 +126,7 @@ split
             return true;
     }
 
-    //splits after 2nd jack mission-ie after evie the mission where you kill jacks warden
+    //splits after 2nd jack mission-ie during the loading screen after you leave the docks as jack
     if(settings["ripper_2"])
     {
        if(old.character == 9 && current.character == 6 && old.cutscene == 1 && current.loading == 1)
