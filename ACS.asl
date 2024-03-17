@@ -20,7 +20,7 @@ state("ACS", "Steam")
     int endscreen: 0x07325DB0, 0x78, 0x3D0, 0x68; // 1 for endscreen showing 0 for not
     int cutscene: 0x7154FE0;  // same as ubi connect
     int Eviemain: 0x070D9A38, 0xD50, 0x2D0, 0x7C0, 0x38, 0x84, 0x108, 0x20; // same as ubi connect
-    int Eviebackup: 0x070D9A38, 0xD50, 0x300, 0x4A0, 0x38, 0x84, 0x3E0, 0x20; // same as ubi connect
+    //int Eviebackup: 0x070D9A38, 0xD50, 0x300, 0x4A0, 0x38, 0x84, 0x3E0, 0x20; // same as ubi connect
     int Jacob: 0x07154AA8, 0x58, 0x6C8, 0x898, 0x78, 0x68, 0x30, 0x230; // same as ubi connect
     int character: 0x071546C8, 0x18, 0x0, 0x308, 0x158; // same as ubi connect
 }
@@ -101,7 +101,7 @@ start
     //starts when you gain control of jacob from loading a save past the first cutscene
     if(settings["loaded_save"])
     {
-        if(old.loading == 1 && current.loading == 0 && current.Jacob == 2 && (current.Eviemain == 0 || current.Eviebackup == 0))
+        if(old.loading == 1 && current.loading == 0 && current.Jacob == 2 && current.Eviemain == 0 )
             return true;
     }
 
@@ -113,7 +113,7 @@ start
 }
 
 /*splits when end mission screen starts 
-note it does not split after missions that involve jack at the end as their is no end screen for that*/
+note if you want it to split on after the jack missions please select the ripper_# as those will allow it to split after the mission ends as jack*/
 split
 {
     //splits when the endscreen shows up aka the thing that allows you to complete the mission by pressing "a" or "space"
