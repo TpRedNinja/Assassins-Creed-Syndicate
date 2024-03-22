@@ -4,9 +4,9 @@
 
 state("ACS", "Ubisoft Connect")
 {
-    int loading: 0x073443F8, 0x388, 0x8, 0xF8, 0xBD8; // Detects if loading, 0 is not loading 1 is for loading
-    int endscreen: 0x0732CD70, 0x50, 0x3A0, 0x98; // Detects end mission sceen, 1 for end screen 0 for literally everything else
-    int cutscene: 0x715EBC0; // Detects cutscene value 0 in loading screen 1 no cutscene 2 for cutscene game and dlc is not a pointer just "ACS.exe" +(inserst address here)
+    int Loading: 0x073443F8, 0x388, 0x8, 0xF8, 0xBD8; // Detects if loading, 0 is not loading 1 is for loading
+    int Endscreen: 0x0732CD70, 0x50, 0x3A0, 0x98; // Detects end mission sceen, 1 for end screen 0 for literally everything else
+    int Cutscene: 0x715EBC0; // Detects cutscene value 0 in loading screen 1 no cutscene 2 for cutscene game and dlc is not a pointer just "ACS.exe" +(inserst address here)
     int Eviemain: 0x070E0BE8, 0x3C8, 0x980, 0x18, 0x38, 0x84, 0x330, 0x230; // Detects if your playing evie in the main game. 1 if false 2 if true.
     int Jacob: 0x070E0BE8, 0xD50, 0x18, 0x480, 0x38, 0x84, 0x390, 0x20; // Detects if your jacob. 0 if false 2 if true.
     int Character: 0x07155D78, 0xB20, 0xA0, 0x560, 0x140; // 6 for evie 7 when not in london 8 for jack 9 when not in london.
@@ -14,14 +14,14 @@ state("ACS", "Ubisoft Connect")
 
 state("ACS", "Steam")
 {
-    int loading: 0x0710EBB8, 0xB4; // detects if loading 1 for true 0 for false
+    int Loading: 0x0710EBB8, 0xB4; // detects if loading 1 for true 0 for false
     // int loadingbackup:0x07154550, 0x904; // same as og but just in case if first one doesnt work
-    int endscreen: 0x07325DB0, 0x78, 0x3D0, 0x68; // 1 for endscreen showing 0 for not
-    int cutscene: 0x7154FE0;  // same as ubi connect
+    int Endscreen: 0x07325DB0, 0x78, 0x3D0, 0x68; // 1 for endscreen showing 0 for not
+    int Cutscene: 0x7154FE0;  // same as ubi connect
     int Eviemain: 0x070D9A38, 0xD50, 0x2D0, 0x7C0, 0x38, 0x84, 0x108, 0x20; // same as ubi connect
     //int Eviebackup: 0x070D9A38, 0xD50, 0x300, 0x4A0, 0x38, 0x84, 0x3E0, 0x20; // same as ubi connect
     int Jacob: 0x07154AA8, 0x58, 0x6C8, 0x898, 0x78, 0x68, 0x30, 0x230; // same as ubi connect
-    int character: 0x071546C8, 0x18, 0x0, 0x308, 0x158; // same as ubi connect
+    int Character: 0x071546C8, 0x18, 0x0, 0x308, 0x158; // same as ubi connect
 }
 
 startup
@@ -86,28 +86,28 @@ start
     //starts when first skippable cutscene plays in dlc
     if(settings["ripper_enabled"])
     {
-        if(current.loading == 0 && old.loading == 1 && current.cutscene == 2)
+        if(current.Loading == 0 && old.Loading == 1 && current.Cutscene == 2)
             return true;
     }
 
     //starts when you gain control of jacob from a fresh save
     if(settings["new_game"])
     {
-        if(current.loading == 0 && old.loading == 0 && current.Jacob == 2 && current.Eviemain == 2)
+        if(current.Loading == 0 && old.Loading == 0 && current.Jacob == 2 && current.Eviemain == 2)
             return true;
     }
 
     //starts when you gain control of jacob from loading a save past the first cutscene
     if(settings["loaded_save"])
     {
-        if(old.loading == 1 && current.loading == 0 && current.Jacob == 2 && current.Eviemain == 0 )
+        if(old.Loading == 1 && current.Loading == 0 && current.Jacob == 2 && current.Eviemain == 0 )
             return true;
     }
 
     //starts when starting a level
     if(settings["levels"])
     {
-        return old.cutscene == 0 && (current.cutscene == 1 || current.cutscene == 2);
+        return old.Cutscene == 0 && (current.Cutscene == 1 || current.Cutscene == 2);
     }
 }
 
@@ -116,30 +116,30 @@ note if you want it to split on after the jack missions please select the ripper
 split
 {
     //splits after end screen disappears so when you press "A" button or Spacebar
-    if(current.endscreen == 1 && old.endscreen == 0)
+    if(current.Endscreen == 1 && old.Endscreen == 0)
         return true;
 
     //Splits after 1st jack mission-ie after jack puts a knife in jacobs eye :)
     if(settings["ripper_1"])
     {
-        if(old.character == 8 && current.character == 6)
-            print("character: " + character + " cutscene: " + current.cutscene);    
+        if(old.Character == 8 && current.Character == 6 && current.Cutscene == 2)
+            print("Character: " + Character + " Cutscene: " + current.Cutscene);    
             return true;
     }
 
     //splits after 2nd jack mission-ie during the loading screen after you leave the docks as jack
     if(settings["ripper_2"])
     {
-       if(old.character == 9 && current.character == 6 && current.loading == 1)
-            print("character: " + character + " cutscene: " + current.cutscene + "loading:" + current.loading);
+       if(old.Character == 9 && current.Character == 6 && current.Loading == 1 && old.Cutscene == 1)
+            print("Character: " + Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
             return true;
     }
 
     //splits after 3rd jack mission-ie lambeth mission as jack
     if(settings["ripper_3"])
     {
-        if(old.character == 7 && current.character == 11)
-            print("character: " + character + " cutscene: " + current.cutscene + "loading:" + current.loading);
+        if(old.Character == 7 && current.Character == 11 && old.Loading == 1 && current.Cutscene == 2)
+            print("Character: " + Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
             return true;
     }
 }
@@ -147,5 +147,5 @@ split
 isLoading
 {
     //pauses during loading screen and unpauses when out of loading screens note black screens do not count as loading
-    return current.loading == 1;
+    return current.Loading == 1;
 }
