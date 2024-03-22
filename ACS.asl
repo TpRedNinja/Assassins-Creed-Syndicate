@@ -123,7 +123,7 @@ split
     if(settings["ripper_1"])
     {
         if(old.Character == 8 && current.Character == 6 && current.Cutscene == 2)
-            print("Character: " + Character + " Cutscene: " + current.Cutscene);    
+            print("Character: " + current.Character + " Cutscene: " + current.Cutscene);    
             return true;
     }
 
@@ -131,7 +131,7 @@ split
     if(settings["ripper_2"])
     {
        if(old.Character == 9 && current.Character == 6 && current.Loading == 1 && old.Cutscene == 1)
-            print("Character: " + Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
+            print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
             return true;
     }
 
@@ -139,7 +139,7 @@ split
     if(settings["ripper_3"])
     {
         if(old.Character == 7 && current.Character == 11 && old.Loading == 1 && current.Cutscene == 2)
-            print("Character: " + Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
+            print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
             return true;
     }
 }
