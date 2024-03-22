@@ -129,14 +129,14 @@ split
     //splits after 2nd jack mission-ie during the loading screen after you leave the docks as jack
     if(settings["ripper_2"])
     {
-       if(old.character == 9 && current.character == 6 && old.cutscene == 1 || 0 || 2 && current.loading == 1)
+       if(old.character == 9 && current.character == 6 && current.loading == 1)
             return true;
     }
 
     //splits after 3rd jack mission-ie lambeth mission as jack
     if(settings["ripper_3"])
     {
-        if(old.character == 7 && current.character == 11 && old.cutscene == 1 || 0 || 2 && current.cutscene == 2)
+        if(old.character == 7 && current.character == 11)
             return true;
     }
 }
