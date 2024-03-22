@@ -122,7 +122,8 @@ split
     //Splits after 1st jack mission-ie after jack puts a knife in jacobs eye :)
     if(settings["ripper_1"])
     {
-        if(old.character == 8 && current.character == 6 && current.cutscene == 2 || 1 )
+        if(old.character == 8 && current.character == 6)
+            print("character: " + character + " cutscene: " + current.cutscene);    
             return true;
     }
 
@@ -130,6 +131,7 @@ split
     if(settings["ripper_2"])
     {
        if(old.character == 9 && current.character == 6 && current.loading == 1)
+            print("character: " + character + " cutscene: " + current.cutscene + "loading:" + current.loading);
             return true;
     }
 
@@ -137,6 +139,7 @@ split
     if(settings["ripper_3"])
     {
         if(old.character == 7 && current.character == 11)
+            print("character: " + character + " cutscene: " + current.cutscene + "loading:" + current.loading);
             return true;
     }
 }
