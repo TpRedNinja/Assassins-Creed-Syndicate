@@ -80,12 +80,17 @@ init
     else if(Enumerable.SequenceEqual(checksum, vars.acsubisoftconnect)) 
         version = "Ubisoft Connect";
 
-    //print shit
-    print("Loading:" + current.Loading + "Cutscene:" + current.Cutscene);
+  
+}
+
+update
+{
+     //print shit
+   /* print("Loading:" + current.Loading + "Cutscene:" + current.Cutscene);
     print("Endscreen:" + current.Cutscene + old.Cutscene);
     print("Character: " + current.Character + " Cutscene: " + current.Cutscene);
     print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
-    print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);  
+    print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading); */
 }
 
 start
@@ -122,7 +127,7 @@ start
 note if you want it to split on after the jack missions please select the ripper_# as those will allow it to split after the mission ends as jack*/
 split
 {
-    //splits after end screen disappears so when you press "A" button or Spacebar
+    //splits after end screen appears so when you are able to press "A" button or Spacebar
     if(current.Endscreen == 1 && old.Endscreen == 0)
         return true;
 
