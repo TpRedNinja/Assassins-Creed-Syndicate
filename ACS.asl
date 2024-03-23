@@ -2,7 +2,8 @@
 //Support for Ubisoft Connect
 //Support for Steam
 
-//[9188] 157683712 
+//[9188] 157683712
+//SHA256: dee8d6e4eee0d749ed0f7dac49421231dad93fb05903b906913890ebcc2fa2ae hash id for ubisoft connect version 
 state("ACS", "Ubisoft Connect")
 {
     int Loading: 0x073443F8, 0x388, 0x8, 0xF8, 0xBD8; // Detects if loading, 0 is not loading 1 is for loading
@@ -13,7 +14,8 @@ state("ACS", "Ubisoft Connect")
     int Character: 0x07155D78, 0xB20, 0xA0, 0x560, 0x140; // 6 for evie 7 when not in london 8 for jack 9 when not in london.
 }
 
-//[10848] 163323904 
+//[10848] 163323904
+//SHA256: a2e6ca1504d172ca87f500d1d6cb1de97a2f6687f7ce77f661dce95e90c54e0e hash id for steam version 
 state("ACS", "Steam")
 {
     int Loading: 0x0710EBB8, 0xB4; // detects if loading 1 for true 0 for false
@@ -28,23 +30,6 @@ state("ACS", "Steam")
 
 startup
 {
-    //SHA256: a2e6ca1504d172ca87f500d1d6cb1de97a2f6687f7ce77f661dce95e90c54e0e hash id for steam version
-    vars.acsSteam = new byte[32]{ 0xa2, 0xe6, 0xca, 0x15, 0x04, 0xd1, 0x72, 0xca, 0x87, 0xf5, 0x00, 0xd1, 0xd6, 0xcb, 0x1d, 0xe9, 0x7a, 0x2f, 0x66, 0x87, 0xf7, 0xce, 0x77, 0xf6, 0x61, 0xdc, 0xe9, 0x5e, 0x90, 0xc5, 0x4e, 0x0e };
-    //SHA256: dee8d6e4eee0d749ed0f7dac49421231dad93fb05903b906913890ebcc2fa2ae hash id for ubisoft connect version
-    vars.acsubisoftconnect = new byte[32] {0xde, 0xe8, 0xd6, 0xe4, 0xee, 0xe0, 0xd7, 0x49, 0xed, 0x0f, 0x7d, 0xac, 0x49, 0x42, 0x12, 0x31, 0xda, 0xd9, 0x3f, 0xb0, 0x59, 0x03, 0xb9, 0x06, 0x91, 0x38, 0x90, 0xeb, 0xcc, 0x2f, 0xa2, 0xae };
-
-
-    // Calculates the hash id for the current module credit to the RE2R autosplitter & deathHound246 on discord for this code
-    Func<ProcessModuleWow64Safe, byte[]> CalcModuleHash = (module) => {
-        print("Calculating hash of " + module.FileName);
-        byte[] checksum = new byte[32];
-        using (var hashFunc = System.Security.Cryptography.SHA256.Create())
-            using (var fs = new FileStream(module.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
-                checksum = hashFunc.ComputeHash(fs);
-        return checksum;
-    }; 
-    vars.CalcModuleHash = CalcModuleHash;
-
     // Asks the user if they want to change to game time if the comparison is set to real time on startup.
     if(timer.CurrentTimingMethod == TimingMethod.RealTime)
     {
@@ -74,15 +59,16 @@ startup
 }
 
 init
-{
-    // Detecting the game version based on SHA-256 hash
-    byte[] checksum = vars.CalcModuleHash(modules.First());
-    if (Enumerable.SequenceEqual(checksum, vars.acsSteam))
-        version = "Steam";
-    else if(Enumerable.SequenceEqual(checksum, vars.acsubisoftconnect)) 
+{  
+        switch (modules.First().ModuleMemorySize) { //Detects which version of the game is being played
+        default:
         version = "Ubisoft Connect";
-        print(modules.First().ModuleMemorySize.ToString());
-        //print(modules.First().ModuleMemorySize.ToString());
+        break;
+        case (163323904):
+        version = "Steam";
+        break;
+    }
+    //print(modules.First().ModuleMemorySize.ToString());
 }
 
 update
