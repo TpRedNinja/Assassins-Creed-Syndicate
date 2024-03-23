@@ -58,8 +58,8 @@ startup
     };
 
     // to control when the timer starts for the main game
-    settings.Add("base", true, "Main Game");
-    settings.Add("new_game", true, "New Game", "base");
+    settings.Add("base", false, "Main Game");
+    settings.Add("new_game", false, "New Game", "base");
     settings.Add("loaded_save", false, "Loaded Game Save", "base");
     settings.Add("levels", false, "Level runs", "base");
 
@@ -79,8 +79,8 @@ init
         version = "Steam";
     else if(Enumerable.SequenceEqual(checksum, vars.acsubisoftconnect)) 
         version = "Ubisoft Connect";
-
-  
+        print(modules.First().ModuleMemorySize.ToString());
+        //print(modules.First().ModuleMemorySize.ToString());
 }
 
 update
@@ -134,21 +134,21 @@ split
     //Splits after 1st jack mission-ie after jack puts a knife in jacobs eye :)
     if(settings["ripper_1"])
     {
-        if(old.Cutscene == 8 && current.Character == 6 && current.Cutscene == 2)  
+        if( current.Character == 6 && old.Cutscene == 8 && current.Cutscene == 2)  
             return true;
     }
 
     //splits after 2nd jack mission-ie during the loading screen after you leave the docks as jack
     if(settings["ripper_2"])
     {
-       if(old.Character == 9 && current.Character == 6 && current.Loading == 1)
+       if(current.Character == 6 && old.Character == 9 && current.Loading == 1)
             return true;
     }
 
     //splits after 3rd jack mission-ie lambeth mission as jack
     if(settings["ripper_3"])
     {
-        if(old.Character == 7 && current.Character == 11 && old.Loading == 1 && current.Cutscene == 2)
+        if(current.Character == 11 && old.Character == 7 && currrent.Loading == 0 && current.Cutscene == 2)
             return true;
     }
 }
