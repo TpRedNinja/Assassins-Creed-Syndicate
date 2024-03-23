@@ -79,6 +79,13 @@ init
         version = "Steam";
     else if(Enumerable.SequenceEqual(checksum, vars.acsubisoftconnect)) 
         version = "Ubisoft Connect";
+
+    //print shit
+    print("Loading:" + current.Loading + "Cutscene:" + current.Cutscene);
+    print("Endscreen:" + current.cutscene + old.cutscene);
+    print("Character: " + current.Character + " Cutscene: " + current.Cutscene);
+    print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
+    print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);  
 }
 
 start
@@ -87,7 +94,6 @@ start
     if(settings["ripper_enabled"])
     {
         if(current.Loading == 0 && old.Loading == 1 && current.Cutscene == 2)
-            print("Loading:" + current.Loading + "Cutscene:" + current.Cutscene);
             return true;
     }
 
@@ -118,14 +124,12 @@ split
 {
     //splits after end screen disappears so when you press "A" button or Spacebar
     if(current.Endscreen == 1 && old.Endscreen == 0)
-        print("Endscreen:" + current.cutscene + old.cutscene);
         return true;
 
     //Splits after 1st jack mission-ie after jack puts a knife in jacobs eye :)
     if(settings["ripper_1"])
     {
-        if(old.Character == 8 && current.Character == 6 && current.Cutscene == 2)
-            print("Character: " + current.Character + " Cutscene: " + current.Cutscene);    
+        if(old.Character == 8 && current.Character == 6 && current.Cutscene == 2)  
             return true;
     }
 
@@ -133,7 +137,6 @@ split
     if(settings["ripper_2"])
     {
        if(old.Character == 9 && current.Character == 6 && current.Loading == 1 && old.Cutscene == 1)
-            print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
             return true;
     }
 
@@ -141,7 +144,6 @@ split
     if(settings["ripper_3"])
     {
         if(old.Character == 7 && current.Character == 11 && old.Loading == 1 && current.Cutscene == 2)
-            print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
             return true;
     }
 }
