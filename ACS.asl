@@ -2,6 +2,7 @@
 //Support for Ubisoft Connect
 //Support for Steam
 
+//[9188] 157683712 
 state("ACS", "Ubisoft Connect")
 {
     int Loading: 0x073443F8, 0x388, 0x8, 0xF8, 0xBD8; // Detects if loading, 0 is not loading 1 is for loading
@@ -85,12 +86,9 @@ init
 
 update
 {
-     //print shit
-   /* print("Loading:" + current.Loading + "Cutscene:" + current.Cutscene);
-    print("Endscreen:" + current.Cutscene + old.Cutscene);
-    print("Character: " + current.Character + " Cutscene: " + current.Cutscene);
-    print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
-    print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading); */
+    print("Jack 1;" + "CurrentCharacter:" + current.Character + " OldCharacter:" + old.Character  + " Cutscene:" + current.Cutscene);
+    print("Jack 2;" + "CurrentCharacter:" + current.Character + " OldCharacter:" + old.Character  + " Loading:" + current.Loading);
+    print("Jack 3;" + "CurrentCharacter:" + current.Character + " OldCharacter:" + old.Character  + " Cutscene:" + current.Cutscene + " Loading:" + current.Loading);
 }
 
 start
@@ -134,7 +132,7 @@ split
     //Splits after 1st jack mission-ie after jack puts a knife in jacobs eye :)
     if(settings["ripper_1"])
     {
-        if( current.Character == 6 && old.Cutscene == 8 && current.Cutscene == 2)  
+        if(current.Character == 6 && old.Character == 8 && current.Cutscene == 2)  
             return true;
     }
 
