@@ -87,6 +87,7 @@ start
     if(settings["ripper_enabled"])
     {
         if(current.Loading == 0 && old.Loading == 1 && current.Cutscene == 2)
+            print("Loading:" + current.Loading + "Cutscene:" + current.Cutscene);
             return true;
     }
 
@@ -117,6 +118,7 @@ split
 {
     //splits after end screen disappears so when you press "A" button or Spacebar
     if(current.Endscreen == 1 && old.Endscreen == 0)
+        print("Endscreen:" + current.cutscene + old.cutscene);
         return true;
 
     //Splits after 1st jack mission-ie after jack puts a knife in jacobs eye :)
