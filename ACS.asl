@@ -134,21 +134,21 @@ split
     //Splits after 1st jack mission-ie after jack puts a knife in jacobs eye :)
     if(settings["ripper_1"])
     {
-        if(current.Character == 6 && current.Cutscene == 2)  
+        if(old.Cutscene == 8 && current.Character == 6 && current.Cutscene == 2)  
             return true;
     }
 
     //splits after 2nd jack mission-ie during the loading screen after you leave the docks as jack
     if(settings["ripper_2"])
     {
-       if(old.Character == 9 && current.Character == 6 && current.Loading == 1 && old.Cutscene == 1)
+       if(old.Character == 9 && current.Character == 6 && current.Loading == 1)
             return true;
     }
 
     //splits after 3rd jack mission-ie lambeth mission as jack
     if(settings["ripper_3"])
     {
-        if(current.Character == 11 && old.Loading == 1 && current.Cutscene == 2)
+        if(old.Character == 7 && current.Character == 11 && old.Loading == 1 && current.Cutscene == 2)
             return true;
     }
 }
