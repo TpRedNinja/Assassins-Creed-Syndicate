@@ -98,7 +98,7 @@ start
     //starts when first skippable cutscene plays in dlc
     if(settings["ripper_enabled"])
     {
-        if(current.Loading == 0 && old.Loading == 1 && current.Cutscene == 2 && old.Cutscene == 0 && current.Character == 8 && old.Character == 6)
+        if(current.Cutscene == 2 && current.Character == 8)
             return true;
     }
 
