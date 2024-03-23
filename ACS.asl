@@ -82,7 +82,7 @@ init
 
     //print shit
     print("Loading:" + current.Loading + "Cutscene:" + current.Cutscene);
-    print("Endscreen:" + current.cutscene + old.cutscene);
+    print("Endscreen:" + current.Cutscene + old.Cutscene);
     print("Character: " + current.Character + " Cutscene: " + current.Cutscene);
     print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);
     print("Character: " + current.Character + " Cutscene: " + current.Cutscene + "Loading:" + current.Loading);  
