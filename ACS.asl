@@ -13,6 +13,7 @@ state("ACS", "Ubisoft Connect")
     int Character: 0x07155D78, 0xB20, 0xA0, 0x560, 0x140; // 6 for evie 7 when not in london 8 for jack 9 when not in london.
 }
 
+//[10848] 163323904 
 state("ACS", "Steam")
 {
     int Loading: 0x0710EBB8, 0xB4; // detects if loading 1 for true 0 for false
@@ -86,9 +87,7 @@ init
 
 update
 {
-    print("Jack 1;" + "CurrentCharacter:" + current.Character + " OldCharacter:" + old.Character  + " Cutscene:" + current.Cutscene);
-    print("Jack 2;" + "CurrentCharacter:" + current.Character + " OldCharacter:" + old.Character  + " Loading:" + current.Loading);
-    print("Jack 3;" + "CurrentCharacter:" + current.Character + " OldCharacter:" + old.Character  + " Cutscene:" + current.Cutscene + " Loading:" + current.Loading);
+    print("Jack;" + "CurrentCharacter:" + current.Character + " OldCharacter:" + old.Character  + " Cutscene:" + current.Cutscene + " Loading:" + current.Loading);
 }
 
 start
@@ -132,14 +131,14 @@ split
     //Splits after 1st jack mission-ie after jack puts a knife in jacobs eye :)
     if(settings["ripper_1"])
     {
-        if(current.Character == 6 && old.Character == 8 && current.Cutscene == 2)  
+        if(current.Character == 6 && old.Character == 8 && current.Cutscene == 0)  
             return true;
     }
 
     //splits after 2nd jack mission-ie during the loading screen after you leave the docks as jack
     if(settings["ripper_2"])
     {
-       if(current.Character == 6 && old.Character == 9 && current.Loading == 1)
+       if(current.Character == 7 && old.Character == 9 && current.Loading == 1 && old.Loading == 0)
             return true;
     }
 
