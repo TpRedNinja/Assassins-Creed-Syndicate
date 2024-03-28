@@ -69,11 +69,13 @@ init
         break;
     }
     //print(modules.First().ModuleMemorySize.ToString());
+    vars.completedsplits = 0;
 }
 
 update
 {
-    print("Jack;" + "CurrentCharacter:" + current.Character + " OldCharacter:" + old.Character  + " Cutscene:" + current.Cutscene + " Loading:" + current.Loading);
+    //print("completedsplits: " + vars.completedsplits);
+    //print("Jack;" + "CurrentCharacter:" + current.Character + " OldCharacter:" + old.Character  + " Cutscene:" + current.Cutscene + " Loading:" + current.Loading);
 }
 
 start
@@ -111,27 +113,29 @@ note if you want it to split on after the jack missions please select the ripper
 split
 {
     //splits after end screen appears so when you are able to press "A" button or Spacebar
-    if(current.Endscreen == 1 && old.Endscreen == 0)
+    if(current.Endscreen == 1 && old.Endscreen == 0){
+        vars.completedsplits++;
         return true;
+    }
 
     //Splits after 1st jack mission-ie after jack puts a knife in jacobs eye :)
     if(settings["ripper_1"])
     {
-        if(current.Character == 6 && old.Character == 8 && current.Cutscene == 0 && current.Loading == 0)  
+        if(current.Character == 6 && old.Character == 8 && current.Cutscene == 0 && current.Loading == 0 && vars.completedsplits == 0)  
             return true;
     }
 
     //splits after 2nd jack mission-ie during the loading screen after you leave the docks as jack
     if(settings["ripper_2"])
     {
-       if(current.Character == 7 && old.Character == 9 && current.Loading == 1 && old.Loading == 0)
+       if(current.Character == 7 && old.Character == 9 && current.Loading == 1 && old.Loading == 0 && vars.completedsplits == 6)
             return true;
     }
 
     //splits after 3rd jack mission-ie lambeth mission as jack
     if(settings["ripper_3"])
     {
-        if(current.Character == 6 && old.Character == 7 && current.Loading == 0 && current.Cutscene == 0)
+        if(current.Character == 6 && old.Character == 7 && current.Loading == 0 && current.Cutscene == 0 && vars.completedsplits == 8)
             return true;
     }
 }
@@ -140,4 +144,9 @@ isLoading
 {
     //pauses during loading screen and unpauses when out of loading screens note black screens do not count as loading
     return current.Loading == 1;
+}
+
+onReset
+{
+    vars.completedsplits = 0;
 }
